@@ -1,0 +1,21 @@
+{
+	"name": "baraja-core/php-pdf-to-image",
+	"description": "Convert PDF to JPG, PNG or GIF in PHP.",
+	"homepage": "https://github.com/baraja-core/php-pdf-to-image",
+	"authors": [
+		{
+			"name": "Jan Barášek",
+			"homepage": "https://baraja.cz"
+		}
+	],
+	"require": {
+		"php": ">=7.1.0",
+		"ext-imagick": "*"
+	},
+	"autoload": {
+		"classmap": [
+			"src/"
+		]
+	},
+	"minimum-stability": "stable"
+}
