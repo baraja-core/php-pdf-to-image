@@ -66,11 +66,11 @@ final class Convertor
 	 */
 	private static function process(string $pdfPath, string $savePath): \Imagick
 	{
-		if (class_exists('\imagick') === false) {
+		if (class_exists('\Imagick') === false) {
 			ConvertorException::imagicKIsNotInstalled();
 		}
 
-		$im = new \imagick($pdfPath);
+		$im = new \Imagick($pdfPath);
 		$im->setImageFormat('jpg');
 		self::write($savePath, (string) $im);
 
