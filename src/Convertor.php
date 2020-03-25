@@ -7,12 +7,14 @@ namespace Baraja\PdfToImage;
 
 final class Convertor
 {
-
 	public const FORMAT_JPG = 'jpg';
+
 	public const FORMAT_PNG = 'png';
+
 	public const FORMAT_GIF = 'gif';
 
 	public const SUPPORTED_FORMATS = [self::FORMAT_JPG, self::FORMAT_PNG, self::FORMAT_GIF];
+
 
 	/**
 	 * @throws \Error
@@ -21,6 +23,7 @@ final class Convertor
 	{
 		throw new \Error('Class ' . get_class($this) . ' is static and cannot be instantiated.');
 	}
+
 
 	/**
 	 * Convert first page of PDF to image and save to disk.
@@ -54,6 +57,7 @@ final class Convertor
 		}
 	}
 
+
 	/**
 	 * @param string $pdfPath
 	 * @param string $savePath
@@ -72,6 +76,7 @@ final class Convertor
 
 		return $im;
 	}
+
 
 	/**
 	 * Writes a string to a file.
@@ -93,6 +98,7 @@ final class Convertor
 		}
 	}
 
+
 	/**
 	 * Creates a directory.
 	 * Moved from nette/utils
@@ -108,6 +114,7 @@ final class Convertor
 		}
 	}
 
+
 	/**
 	 * Moved from nette/utils
 	 *
@@ -115,7 +122,6 @@ final class Convertor
 	 */
 	private static function getLastError(): string
 	{
-		return preg_replace('#^\w+\(.*?\): #', '', error_get_last()['message']);
+		return (string) preg_replace('#^\w+\(.*?\): #', '', error_get_last()['message']);
 	}
-
 }

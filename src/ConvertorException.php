@@ -17,6 +17,7 @@ final class ConvertorException extends \Exception
 		throw new self('File "' . $path . '" does not exist.');
 	}
 
+
 	/**
 	 * @param string $format
 	 * @throws ConvertorException
@@ -29,6 +30,7 @@ final class ConvertorException extends \Exception
 		);
 	}
 
+
 	/**
 	 * @throws ConvertorException
 	 */
@@ -36,5 +38,4 @@ final class ConvertorException extends \Exception
 	{
 		throw new self('Imagick is not installed.');
 	}
-
 }
