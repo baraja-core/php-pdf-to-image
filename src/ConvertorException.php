@@ -9,7 +9,6 @@ final class ConvertorException extends \Exception
 {
 
 	/**
-	 * @param string $path
 	 * @throws ConvertorException
 	 */
 	public static function fileDoesNotExist(string $path): void
@@ -19,7 +18,6 @@ final class ConvertorException extends \Exception
 
 
 	/**
-	 * @param string $format
 	 * @throws ConvertorException
 	 */
 	public static function unsupportedFormat(string $format): void

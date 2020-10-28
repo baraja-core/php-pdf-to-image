@@ -9,7 +9,7 @@ Install
 By Composer:
 
 ```shell
-composer require baraja-core/php-pdf-to-image
+$ composer require baraja-core/php-pdf-to-image
 ```
 
 Usage

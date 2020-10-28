@@ -16,9 +16,7 @@ final class Convertor
 	public const SUPPORTED_FORMATS = [self::FORMAT_JPG, self::FORMAT_PNG, self::FORMAT_GIF];
 
 
-	/**
-	 * @throws \Error
-	 */
+	/** @throws \Error */
 	public function __construct()
 	{
 		throw new \Error('Class ' . get_class($this) . ' is static and cannot be instantiated.');
@@ -28,10 +26,6 @@ final class Convertor
 	/**
 	 * Convert first page of PDF to image and save to disk.
 	 *
-	 * @param string $pdfPath
-	 * @param string $savePath
-	 * @param string $format
-	 * @param bool $trim
 	 * @throws ConvertorException
 	 */
 	public static function convert(string $pdfPath, string $savePath, string $format = 'jpg', bool $trim = false): void
@@ -39,14 +33,11 @@ final class Convertor
 		if (\in_array($format = strtolower($format), self::SUPPORTED_FORMATS, true) === false) {
 			ConvertorException::unsupportedFormat($format);
 		}
-
 		if (\is_file($pdfPath) === false) {
 			ConvertorException::fileDoesNotExist($pdfPath);
 		}
-
 		try {
 			$im = self::process($pdfPath, $savePath);
-
 			if ($trim === true) {
 				$im->setImageBorderColor('rgb(255,255,255)');
 				$im->trimImage(1);
@@ -59,8 +50,6 @@ final class Convertor
 
 
 	/**
-	 * @param string $pdfPath
-	 * @param string $savePath
 	 * @return \Imagick
 	 * @throws ConvertorException|\ImagickException
 	 */
@@ -79,12 +68,8 @@ final class Convertor
 
 
 	/**
-	 * Writes a string to a file.
-	 * Moved from nette/utils
+	 * Writes a string to a file. Moved from nette/utils
 	 *
-	 * @param string $file
-	 * @param string $content
-	 * @param int|null $mode
 	 * @throws ConvertorException
 	 */
 	private static function write(string $file, string $content, ?int $mode = 0666): void
@@ -100,11 +85,8 @@ final class Convertor
 
 
 	/**
-	 * Creates a directory.
-	 * Moved from nette/utils
+	 * Creates a directory. Moved from nette/utils
 	 *
-	 * @param string $dir
-	 * @param int $mode
 	 * @throws ConvertorException
 	 */
 	private static function createDir(string $dir, int $mode = 0777): void
@@ -115,11 +97,6 @@ final class Convertor
 	}
 
 
-	/**
-	 * Moved from nette/utils
-	 *
-	 * @return string
-	 */
 	private static function getLastError(): string
 	{
 		return (string) preg_replace('#^\w+\(.*?\): #', '', error_get_last()['message']);
