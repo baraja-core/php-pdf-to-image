@@ -31,10 +31,13 @@ final class Convertor
 	public static function convert(string $pdfPath, string $savePath, string $format = 'jpg', bool $trim = false): void
 	{
 		if (\in_array($format = strtolower($format), self::SUPPORTED_FORMATS, true) === false) {
-			ConvertorException::unsupportedFormat($format);
+			throw new \InvalidArgumentException(
+				'Format "' . $format . '" is not supported. '
+				. 'Did you mean "' . implode('", "', Convertor::SUPPORTED_FORMATS) . '"?'
+			);
 		}
 		if (\is_file($pdfPath) === false) {
-			ConvertorException::fileDoesNotExist($pdfPath);
+			throw new ConvertorException('File "' . $pdfPath . '" does not exist.');
 		}
 		try {
 			$im = self::process($pdfPath, $savePath);
@@ -50,13 +53,12 @@ final class Convertor
 
 
 	/**
-	 * @return \Imagick
-	 * @throws ConvertorException|\ImagickException
+	 * @throws \ImagickException
 	 */
 	private static function process(string $pdfPath, string $savePath): \Imagick
 	{
 		if (class_exists('\Imagick') === false) {
-			ConvertorException::imagicKIsNotInstalled();
+			throw new \RuntimeException('Imagick is not installed.');
 		}
 
 		$im = new \Imagick($pdfPath);
