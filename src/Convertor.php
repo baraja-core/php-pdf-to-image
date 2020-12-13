@@ -99,6 +99,6 @@ final class Convertor
 
 	private static function getLastError(): string
 	{
-		return (string) preg_replace('#^\w+\(.*?\): #', '', error_get_last()['message']);
+		return (string) preg_replace('#^\w+\(.*?\): #', '', error_get_last()['message'] ?? '');
 	}
 }
