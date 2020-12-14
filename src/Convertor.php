@@ -33,7 +33,7 @@ final class Convertor
 		if (\in_array($format = strtolower($format), self::SUPPORTED_FORMATS, true) === false) {
 			throw new \InvalidArgumentException(
 				'Format "' . $format . '" is not supported. '
-				. 'Did you mean "' . implode('", "', Convertor::SUPPORTED_FORMATS) . '"?'
+				. 'Did you mean "' . implode('", "', self::SUPPORTED_FORMATS) . '"?'
 			);
 		}
 		if (\is_file($pdfPath) === false) {
