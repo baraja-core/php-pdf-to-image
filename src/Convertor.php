@@ -74,7 +74,7 @@ final class Convertor
 	 *
 	 * @throws ConvertorException
 	 */
-	private static function write(string $file, string $content, ?int $mode = 0666): void
+	private static function write(string $file, string $content, ?int $mode = 0_666): void
 	{
 		static::createDir(dirname($file));
 		if (@file_put_contents($file, $content) === false) { // @ is escalated to exception
@@ -91,7 +91,7 @@ final class Convertor
 	 *
 	 * @throws ConvertorException
 	 */
-	private static function createDir(string $dir, int $mode = 0777): void
+	private static function createDir(string $dir, int $mode = 0_777): void
 	{
 		if (!is_dir($dir) && !@mkdir($dir, $mode, true) && !is_dir($dir)) { // @ - dir may already exist
 			throw new ConvertorException('Unable to create directory "' . $dir . '": ' . self::getLastError());
