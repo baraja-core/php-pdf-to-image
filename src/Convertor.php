@@ -19,7 +19,7 @@ final class Convertor
 	/** @throws \Error */
 	public function __construct()
 	{
-		throw new \Error('Class ' . get_class($this) . ' is static and cannot be instantiated.');
+		throw new \Error('Class ' . static::class . ' is static and cannot be instantiated.');
 	}
 
 
@@ -33,7 +33,7 @@ final class Convertor
 		if (\in_array($format = strtolower($format), self::SUPPORTED_FORMATS, true) === false) {
 			throw new \InvalidArgumentException(
 				'Format "' . $format . '" is not supported. '
-				. 'Did you mean "' . implode('", "', self::SUPPORTED_FORMATS) . '"?'
+				. 'Did you mean "' . implode('", "', self::SUPPORTED_FORMATS) . '"?',
 			);
 		}
 		if (\is_file($pdfPath) === false) {
