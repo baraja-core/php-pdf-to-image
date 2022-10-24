@@ -7,14 +7,6 @@ namespace Baraja\PdfToImage;
 
 final class Convertor
 {
-	public const
-		FormatJpg = 'jpg',
-		FormatPng = 'png',
-		FormatGif = 'gif';
-
-	public const SupportedFormats = [self::FormatJpg, self::FormatPng, self::FormatGif];
-
-
 	/** @throws \Error */
 	public function __construct()
 	{
@@ -27,26 +19,8 @@ final class Convertor
 	 *
 	 * @throws ConvertorException
 	 */
-	public static function convert(
-		string|Configuration $pdfPath,
-		?string $savePath = null,
-		string $format = 'jpg',
-		bool $trim = false
-	): void {
-		$configuration = is_string($pdfPath)
-			? Configuration::from($pdfPath, $savePath, $format, $trim)
-			: $pdfPath;
-
-		if (in_array($configuration->format, self::SupportedFormats, true) === false) {
-			throw new \InvalidArgumentException(sprintf(
-				'Format "%s" is not supported. Did you mean "%s"?',
-				$configuration->format,
-				implode('", "', self::SupportedFormats),
-			));
-		}
-		if (is_file($configuration->pdfPath) === false) {
-			throw new ConvertorException(sprintf('File "%s" does not exist.', $configuration->pdfPath));
-		}
+	public static function convert(Configuration $configuration): void
+	{
 		try {
 			self::process($configuration);
 		} catch (\ImagickException $e) {
