@@ -35,15 +35,15 @@ $configuration = new Configuration(
 Supported configuration options
 -------------------------------
 
-| Name       | Type       | Default value |
-|------------|------------|---------|
-| `pdfPath`  | `string`   |         |
-| `savePath` | `string`   |         |
-| `format`   | `string`   | `'jpg'` |
-| `trim`     | `bool`     | `false` |
-| `cols`     | `int|null` | `null`  |
-| `rows`     | `int|null` | `null`  |
-| `bestfit`  | `bool`     | `false` |
+| Name       | Type          | Default value |
+|------------|---------------|---------------|
+| `pdfPath`  | `string`      |               |
+| `savePath` | `string`      |               |
+| `format`   | `string`      | `'jpg'`       |
+| `trim`     | `bool`        | `false`       |
+| `cols`     | `int`, `null` | `null`        |
+| `rows`     | `int`, `null` | `null`        |
+| `bestfit`  | `bool`        | `false`       |
 
 📄 License
 -----------
