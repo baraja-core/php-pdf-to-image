@@ -7,13 +7,12 @@ namespace Baraja\PdfToImage;
 
 final class Convertor
 {
-	public const FORMAT_JPG = 'jpg';
+	public const
+		FormatJpg = 'jpg',
+		FormatPng = 'png',
+		FormatGif = 'gif';
 
-	public const FORMAT_PNG = 'png';
-
-	public const FORMAT_GIF = 'gif';
-
-	public const SUPPORTED_FORMATS = [self::FORMAT_JPG, self::FORMAT_PNG, self::FORMAT_GIF];
+	public const SupportedFormats = [self::FormatJpg, self::FormatPng, self::FormatGif];
 
 
 	/** @throws \Error */
@@ -28,24 +27,28 @@ final class Convertor
 	 *
 	 * @throws ConvertorException
 	 */
-	public static function convert(string $pdfPath, string $savePath, string $format = 'jpg', bool $trim = false): void
-	{
-		if (\in_array($format = strtolower($format), self::SUPPORTED_FORMATS, true) === false) {
-			throw new \InvalidArgumentException(
-				'Format "' . $format . '" is not supported. '
-				. 'Did you mean "' . implode('", "', self::SUPPORTED_FORMATS) . '"?',
-			);
+	public static function convert(
+		string|Configuration $pdfPath,
+		?string $savePath = null,
+		string $format = 'jpg',
+		bool $trim = false
+	): void {
+		$configuration = is_string($pdfPath)
+			? Configuration::from($pdfPath, $savePath, $format, $trim)
+			: $pdfPath;
+
+		if (in_array($configuration->format, self::SupportedFormats, true) === false) {
+			throw new \InvalidArgumentException(sprintf(
+				'Format "%s" is not supported. Did you mean "%s"?',
+				$configuration->format,
+				implode('", "', self::SupportedFormats),
+			));
 		}
-		if (\is_file($pdfPath) === false) {
-			throw new ConvertorException('File "' . $pdfPath . '" does not exist.');
+		if (is_file($configuration->pdfPath) === false) {
+			throw new ConvertorException(sprintf('File "%s" does not exist.', $configuration->pdfPath));
 		}
 		try {
-			$im = self::process($pdfPath, $savePath);
-			if ($trim === true) {
-				$im->setImageBorderColor('rgb(255,255,255)');
-				$im->trimImage(1);
-				self::write($savePath, (string) $im);
-			}
+			self::process($configuration);
 		} catch (\ImagickException $e) {
 			throw new ConvertorException($e->getMessage(), $e->getCode(), $e);
 		}
@@ -55,17 +58,22 @@ final class Convertor
 	/**
 	 * @throws \ImagickException
 	 */
-	private static function process(string $pdfPath, string $savePath): \Imagick
+	private static function process(Configuration $configuration): void
 	{
 		if (class_exists('\Imagick') === false) {
 			throw new \RuntimeException('Imagick is not installed.');
 		}
 
-		$im = new \Imagick($pdfPath);
-		$im->setImageFormat('jpg');
-		self::write($savePath, (string) $im);
-
-		return $im;
+		$im = new \Imagick($configuration->pdfPath);
+		$im->setImageFormat($configuration->format);
+		if ($configuration->cols !== null && $configuration->rows !== null) {
+			$im->scaleImage($configuration->cols, $configuration->rows, $configuration->bestfit);
+		}
+		if ($configuration->trim) {
+			$im->setImageBorderColor('rgb(255,255,255)');
+			$im->trimImage(1);
+		}
+		self::write($configuration->savePath, (string) $im);
 	}
 
 
@@ -76,12 +84,12 @@ final class Convertor
 	 */
 	private static function write(string $file, string $content, ?int $mode = 0_666): void
 	{
-		static::createDir(dirname($file));
+		self::createDir(dirname($file));
 		if (@file_put_contents($file, $content) === false) { // @ is escalated to exception
-			throw new ConvertorException('Unable to write file "' . $file . '": ' . self::getLastError());
+			throw new ConvertorException(sprintf('Unable to write file "%s": %s', $file, self::getLastError()));
 		}
 		if ($mode !== null && !@chmod($file, $mode)) { // @ is escalated to exception
-			throw new ConvertorException('Unable to chmod file "' . $file . '": ' . self::getLastError());
+			throw new ConvertorException(sprintf('Unable to chmod file "%s": %s', $file, self::getLastError()));
 		}
 	}
 
@@ -94,7 +102,7 @@ final class Convertor
 	private static function createDir(string $dir, int $mode = 0_777): void
 	{
 		if (!is_dir($dir) && !@mkdir($dir, $mode, true) && !is_dir($dir)) { // @ - dir may already exist
-			throw new ConvertorException('Unable to create directory "' . $dir . '": ' . self::getLastError());
+			throw new ConvertorException(sprintf('Unable to create directory "%s": %s', $dir, self::getLastError()));
 		}
 	}
 

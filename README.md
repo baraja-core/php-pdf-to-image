@@ -22,12 +22,28 @@ How to use
 ----------
 
 ```php
-$pdfPath = __DIR__ . '/example.pdf';
-$imagePath = __DIR__ . '/example.jpg';
+$configuration = new Configuration(
+	pdfPath: __DIR__ . '/example.pdf',
+	savePath: __DIR__ . '/example.jpg',
+	format: 'jpg'
+);
 
 // Render PDF to image and save to disk.
-\Baraja\PdfToImage\Convertor::convert($pdfPath, $imagePath, 'jpg');
+\Baraja\PdfToImage\Convertor::convert($configuration);
 ```
+
+Supported configuration options
+-------------------------------
+
+| Name       | Type       | Default value |
+|------------|------------|---------|
+| `pdfPath`  | `string`   |         |
+| `savePath` | `string`   |         |
+| `format`   | `string`   | `'jpg'` |
+| `trim`     | `bool`     | `false` |
+| `cols`     | `int|null` | `null`  |
+| `rows`     | `int|null` | `null`  |
+| `bestfit`  | `bool`     | `false` |
 
 📄 License
 -----------
